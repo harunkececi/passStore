@@ -60,25 +60,9 @@ Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Fil
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
-function InitializeSetup(): Boolean;
-var
-  dotnetVersion: String;
-begin
-  // .NET 8.0 Runtime kontrolü
-  if not IsDotNetInstalled('8.0', dotnetVersion) then
-  begin
-    MsgBox('PassStore uygulaması .NET 8.0 Runtime gerektirir.' + #13#10 + #13#10 +
-           'Lütfen önce .NET 8.0 Runtime''ı yükleyin:' + #13#10 +
-           'https://dotnet.microsoft.com/download/dotnet/8.0' + #13#10 + #13#10 +
-           'Alternatif olarak Self-Contained kurulum dosyasını kullanabilirsiniz ' +
-           '(PassStore_Setup_1.0.0_SelfContained.exe)', mbCriticalError, MB_OK);
-    Result := False;
-  end
-  else
-  begin
-    Result := True;
-  end;
-end;
+// Forward declaration
+function IsDotNetInstalled(version: String; var installedVersion: String): Boolean;
+forward;
 
 function IsDotNetInstalled(version: String; var installedVersion: String): Boolean;
 var
@@ -131,5 +115,25 @@ begin
     Result := RegKeyExists(HKLM, key);
     if Result then
       installedVersion := 'Installed (version unknown)';
+  end;
+end;
+
+function InitializeSetup(): Boolean;
+var
+  dotnetVersion: String;
+begin
+  // .NET 8.0 Runtime kontrolü
+  if not IsDotNetInstalled('8.0', dotnetVersion) then
+  begin
+    MsgBox('PassStore uygulaması .NET 8.0 Runtime gerektirir.' + #13#10 + #13#10 +
+           'Lütfen önce .NET 8.0 Runtime''ı yükleyin:' + #13#10 +
+           'https://dotnet.microsoft.com/download/dotnet/8.0' + #13#10 + #13#10 +
+           'Alternatif olarak Self-Contained kurulum dosyasını kullanabilirsiniz ' +
+           '(PassStore_Setup_1.0.0_SelfContained.exe)', mbCriticalError, MB_OK);
+    Result := False;
+  end
+  else
+  begin
+    Result := True;
   end;
 end;

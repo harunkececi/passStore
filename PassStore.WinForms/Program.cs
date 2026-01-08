@@ -6,6 +6,7 @@ using PassStore.Infrastructure.Data;
 using PassStore.Infrastructure.Migrations;
 using PassStore.WinForms.Forms;
 using System.Reflection;
+using System;
 using System.Windows.Forms;
 using System.IO;
 
@@ -30,19 +31,43 @@ static class Program
             {
                 // FluentMigrator ile migration'ları çalıştır
                 var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+                
+                // Migration'ları çalıştır
+                System.Diagnostics.Debug.WriteLine("[PassStore] Migration'lar başlatılıyor...");
                 runner.MigrateUp();
+                System.Diagnostics.Debug.WriteLine("[PassStore] Migration'lar tamamlandı.");
+                
             }
         }
         catch (Exception ex)
         {
+            // Path bilgisini al (DependencyInjection ile aynı mantık)
+            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var dbDirectory = Path.Combine(localAppData, "PassStore");
+            var dbPath = Path.Combine(dbDirectory, "passstore.db");
+            
+            System.Diagnostics.Debug.WriteLine($"[PassStore] Migration hatası: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"[PassStore] Inner Exception: {ex.InnerException?.Message}");
+            
             // Eğer tablo zaten varsa hatası ise, devam et (muhtemelen migration zaten çalıştırılmış)
-            if (!ex.Message.Contains("already exists") && !ex.InnerException?.Message.Contains("already exists") == true)
+            if (ex.Message.Contains("already exists") || ex.InnerException?.Message.Contains("already exists") == true)
             {
-                MessageBox.Show($"Veritabanı hatası: {ex.Message}\n\nLütfen passstore.db dosyasını silip tekrar deneyin.", 
+                System.Diagnostics.Debug.WriteLine("[PassStore] Tablo zaten var, devam ediliyor...");
+                // "already exists" hatası ise sessizce devam et
+            }
+            else
+            {
+                var errorMessage = $"Veritabanı hatası: {ex.Message}\n\n" +
+                    $"Veritabanı yolu: {dbPath}\n" +
+                    $"Dizin mevcut: {(Directory.Exists(dbDirectory) ? "Evet" : "Hayır")}\n" +
+                    $"Dosya mevcut: {(File.Exists(dbPath) ? "Evet" : "Hayır")}\n\n" +
+                    $"Lütfen passstore.db dosyasını silip tekrar deneyin.\n" +
+                    $"(Dosya konumu: {dbPath})";
+                
+                MessageBox.Show(errorMessage, 
                     "Veritabanı Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            // "already exists" hatası ise sessizce devam et
         }
 
         // Login formunu göster veya kayıtlı kullanıcı için direkt master password

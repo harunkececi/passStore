@@ -2,6 +2,10 @@
 echo PassStore Kurulum Dosyasi Olusturuluyor...
 echo.
 
+REM Script'in bulunduğu dizini al
+cd /d "%~dp0"
+cd ..
+
 REM Release modunda derle
 echo Release modunda derleniyor...
 dotnet build PassStore.sln -c Release
@@ -35,6 +39,9 @@ if errorlevel 1 (
 
 REM Installer klasorunu olustur
 if not exist "..\Installer" mkdir "..\Installer"
+
+REM PassStore.WinForms klasorune geri don
+cd PassStore.WinForms
 
 REM Inno Setup ile kurulum dosyasi olustur
 echo Inno Setup ile kurulum dosyasi olusturuluyor...

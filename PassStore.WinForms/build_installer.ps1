@@ -3,13 +3,20 @@
 Write-Host "PassStore Kurulum Dosyasi Olusturuluyor..." -ForegroundColor Cyan
 Write-Host ""
 
+# Script'in bulunduğu dizini al
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$solutionPath = Join-Path (Split-Path $scriptDir -Parent) "PassStore.sln"
+
 # Release modunda derle
 Write-Host "Release modunda derleniyor..." -ForegroundColor Yellow
-dotnet build PassStore.sln -c Release
+Write-Host "Solution: $solutionPath" -ForegroundColor Gray
+dotnet build "$solutionPath" -c Release
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "HATA: Derleme basarisiz!" -ForegroundColor Red
-    Read-Host "Devam etmek icin Enter'a basin"
+    if ([Environment]::UserInteractive) {
+        Read-Host "Devam etmek icin Enter'a basin"
+    }
     exit 1
 }
 
@@ -23,6 +30,8 @@ $innoSetupPath = Get-Command iscc -ErrorAction SilentlyContinue
 if (-not $innoSetupPath) {
     # Alternatif konumları kontrol et
     $possiblePaths = @(
+        "${env:LOCALAPPDATA}\Programs\Inno Setup 6\ISCC.exe",
+        "C:\Users\$env:USERNAME\AppData\Local\Programs\Inno Setup 6\ISCC.exe",
         "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
         "C:\Program Files\Inno Setup 6\ISCC.exe",
         "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
@@ -49,7 +58,9 @@ if (-not $innoSetupPath) {
         Write-Host ""
         Write-Host "Alternatif olarak, installer.iss dosyasini Inno Setup Compiler ile acip derleyebilirsiniz." -ForegroundColor Cyan
         Write-Host ""
-        Read-Host "Devam etmek icin Enter'a basin"
+        if ([Environment]::UserInteractive) {
+            Read-Host "Devam etmek icin Enter'a basin"
+        }
         exit 1
     }
 } else {
@@ -64,12 +75,15 @@ if (-not (Test-Path $installerDir)) {
 
 # Inno Setup ile kurulum dosyası oluştur
 Write-Host "Inno Setup ile kurulum dosyasi olusturuluyor..." -ForegroundColor Yellow
-& $innoSetupExe installer.iss
+$installerScript = Join-Path $scriptDir "installer.iss"
+& $innoSetupExe "$installerScript"
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
     Write-Host "HATA: Kurulum dosyasi olusturulamadi!" -ForegroundColor Red
-    Read-Host "Devam etmek icin Enter'a basin"
+    if ([Environment]::UserInteractive) {
+        Read-Host "Devam etmek icin Enter'a basin"
+    }
     exit 1
 }
 
@@ -80,4 +94,6 @@ Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "Dosya konumu: $installerDir\PassStore_Setup_1.0.0.exe" -ForegroundColor Cyan
 Write-Host ""
-Read-Host "Devam etmek icin Enter'a basin"
+if ([Environment]::UserInteractive) {
+    Read-Host "Devam etmek icin Enter'a basin"
+}

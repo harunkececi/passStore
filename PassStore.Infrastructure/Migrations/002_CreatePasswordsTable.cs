@@ -23,14 +23,12 @@ public class CreatePasswordsTable : Migration
             .WithColumn("silen_kullanici").AsString(36).Nullable()
             .WithColumn("silinme_tarihi").AsDateTime().Nullable();
 
-        Create.ForeignKey("fk_passwords_users")
-            .FromTable("passwords").ForeignColumn("kullanici_id")
-            .ToTable("users").PrimaryColumn("id");
+        // SQLite foreign key desteği sınırlı olduğu için foreign key constraint'i kaldırıldı
+        // İlişki uygulama katmanında kontrol edilecek
     }
 
     public override void Down()
     {
-        Delete.ForeignKey("fk_passwords_users").OnTable("passwords");
         Delete.Table("passwords");
     }
 }
