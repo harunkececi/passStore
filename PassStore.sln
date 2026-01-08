@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassStore.Core", "PassStore.Core\PassStore.Core.csproj", "{62C3B9FD-536B-4576-8851-31BFBD2F1716}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassStore.Infrastructure", "PassStore.Infrastructure\PassStore.Infrastructure.csproj", "{AD42B383-CCFC-4C05-8E1C-C61361D36CFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassStore.Application", "PassStore.Application\PassStore.Application.csproj", "{D58CD498-68EE-4E91-8EAA-55803F3DC330}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PassStore.WinForms", "PassStore.WinForms\PassStore.WinForms.csproj", "{0D53CF96-A9F2-42D2-965C-2EC673156BFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62C3B9FD-536B-4576-8851-31BFBD2F1716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C3B9FD-536B-4576-8851-31BFBD2F1716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C3B9FD-536B-4576-8851-31BFBD2F1716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C3B9FD-536B-4576-8851-31BFBD2F1716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD42B383-CCFC-4C05-8E1C-C61361D36CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD42B383-CCFC-4C05-8E1C-C61361D36CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD42B383-CCFC-4C05-8E1C-C61361D36CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD42B383-CCFC-4C05-8E1C-C61361D36CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58CD498-68EE-4E91-8EAA-55803F3DC330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58CD498-68EE-4E91-8EAA-55803F3DC330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58CD498-68EE-4E91-8EAA-55803F3DC330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58CD498-68EE-4E91-8EAA-55803F3DC330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D53CF96-A9F2-42D2-965C-2EC673156BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D53CF96-A9F2-42D2-965C-2EC673156BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D53CF96-A9F2-42D2-965C-2EC673156BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D53CF96-A9F2-42D2-965C-2EC673156BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
